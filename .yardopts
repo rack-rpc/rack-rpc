@@ -1,0 +1,12 @@
+--title "Rack::RPC - JSON-RPC/XML-RPC Server for Rack Applications"
+--output-dir doc/yard
+--protected
+--no-private
+--hide-void-return
+--markup markdown
+--readme README.md
+-
+AUTHORS
+CREDITS
+UNLICENSE
+VERSION
