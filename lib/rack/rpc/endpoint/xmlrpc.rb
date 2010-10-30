@@ -31,7 +31,9 @@ class Rack::RPC::Endpoint
       # @param  [Rack::Request] request
       # @return [Rack::Response]
       def execute(request)
-        Rack::Response.new([process(request.body.read)], 200, {
+        request_body = request.body.read
+        request_body.force_encoding(Encoding::UTF_8) if request_body.respond_to?(:force_encoding) # Ruby 1.9+
+        Rack::Response.new([process(request_body)], 200, {
           'Content-Type' => (request.content_type || CONTENT_TYPE).to_s,
         })
       end
