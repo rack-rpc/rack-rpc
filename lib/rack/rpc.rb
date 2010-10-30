@@ -1,7 +1,10 @@
-require 'rack'
+require 'rack' # @see http://rubygems.org/gems/rack
 
 module Rack
   module RPC
-    autoload :VERSION, 'rack/rpc/version'
+    autoload :Endpoint,   'rack/rpc/endpoint'
+    autoload :Middleware, 'rack/rpc/middleware'
+    autoload :Server,     'rack/rpc/server'
+    autoload :VERSION,    'rack/rpc/version'
   end
 end
