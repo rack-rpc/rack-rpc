@@ -81,7 +81,7 @@ class Rack::RPC::Endpoint
       OPTIONS = {}
 
       ##
-      # @parse  [String] input
+      # @param  [String] input
       # @return [Object]
       def self.parse(input)
         self.new(JSON.parse(input))
