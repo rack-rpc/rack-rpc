@@ -72,10 +72,9 @@ module Rack; module RPC
     end
 
     def callable?(method)
-      return true if options.empty?
-      return true if !options[:only].nil? && options[:only].include?(method)
-      return false if !options[:except].nil? && options[:except].include?(method)
-      true
+      options.empty? ||
+      (!options[:only].nil? && options[:only].include?(method)) ||
+      (!options[:except].nil? && !options[:except].include?(method))
     end
   end
 
