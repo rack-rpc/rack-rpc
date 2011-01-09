@@ -39,6 +39,18 @@ class Rack::RPC::Endpoint
       end
 
       ##
+      # Process requests and ensure errors are handled properly
+      #
+      # @param [String] request body
+      def process(request_body)
+        begin
+          super(request_body)
+        rescue RuntimeError => e
+          error_response(-32500, "application error - #{e.message}")
+        end
+      end
+
+      ##
       # Implements the `system.getCapabilities` standard method, enabling
       # clients to determine whether a given capability is supported by this
       # server.
@@ -61,6 +73,38 @@ class Rack::RPC::Endpoint
           capabilities
         end
         self
+      end
+
+
+      ##  
+      # Create a valid error response for a given code and message
+      #
+      # @param [Int] error code
+      # @param [String] error message
+      # @return [String] response xml string
+      def error_response(code, message)
+        xml = Builder::XmlMarkup.new
+        xml.instruct! :xml, :version=>"1.0"
+        xml.methodResponse{ 
+          xml.fault {
+            xml.value{
+              xml.struct{
+                xml.member{
+                  xml.name('faultCode')
+                  xml.value{
+                    xml.int(code)
+                  }
+                }
+                xml.member{
+                  xml.name('faultString')
+                  xml.value{
+                    xml.string(message)
+                  } 
+                }
+              } 
+            } 
+          } 
+        }
       end
     end # Server
   end # XMLRPC
