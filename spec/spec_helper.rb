@@ -12,6 +12,6 @@ RSpec.configure do |config|
   config.include Rack::Test::Methods
 
   def app
-    Rack::RPC::Endpoint.new(sample_app, Rack::RPC::FakeRPCServer.new)
+    Rack::RPC::Endpoint.new(sample_app, FakeRPCServer.new)
   end
 end
