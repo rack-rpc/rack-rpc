@@ -148,8 +148,11 @@ describe Rack::RPC::Server do
           @server.before_method_one_called.should be_true
           @server.test_method_one_called.should be_true
           @server.test_method_one_called = false
+          @server.before_method_one_called = false
           @server.test_method_two
           @server.test_method_one_called.should be_false
+          @server.before_method_one_called.should be_false
+          @server.test_method_two_called.should be_true
         end
 
         it "should only execute the method if the method name is in the options array" do
@@ -168,6 +171,10 @@ describe Rack::RPC::Server do
           @server.test_method_two
           @server.test_method_two_called.should be_true
           @server.before_method_general_called.should be_true
+          @server.before_method_general_called = false
+          @server.test_method_three
+          @server.before_method_general_called.should be_false
+          @server.test_method_three_called.should be_true
         end
       end
     end
@@ -209,14 +216,17 @@ describe Rack::RPC::Server do
           @server.after_method_one_called = false
           @server.test_method_one_called = false
           @server.test_method_two
+          @server.after_method_one_called.should be_false
           @server.test_method_one_called.should be_false
-          @server.test_method_one_called.should be_false
+          @server.test_method_two_called.should be_true
         end
 
+        # FIXME
         it "should only execute the method if the method is in the only options array" do
           class AfterFilterOnlyArrayOptionsMethodSuccess < FakeRPCServerWithFilters
             after_filter :after_method_general, :only => [:test_method_one, :test_method_two]
             attr_accessor :after_method_general_called
+
             def after_method_general
               @after_method_general_called = true
               true
@@ -230,6 +240,10 @@ describe Rack::RPC::Server do
           @server.test_method_two
           @server.after_method_general_called.should be_true
           @server.test_method_two_called.should be_true
+          @server.after_method_general_called = false
+          @server.test_method_three
+          @server.test_method_three_called.should be_true
+          @server.after_method_general_called.should be_false
         end
       end
 
@@ -315,8 +329,11 @@ describe Rack::RPC::Server do
           @server.after_method_one_called.should be_true
           @server.test_method_one_called.should be_true
           @server.test_method_one_called = false
+          @server.after_method_one_called = false
           @server.test_method_two
           @server.test_method_one_called.should be_false
+          @server.after_method_one_called.should be_false
+          @server.test_method_two_called.should be_true
         end
 
         it "should only execute the method if the method name is in the options array" do
@@ -335,6 +352,9 @@ describe Rack::RPC::Server do
           @server.test_method_two
           @server.test_method_two_called.should be_true
           @server.after_method_general_called.should be_true
+          @server.after_method_general_called = false
+          @server.test_method_three
+          @server.after_method_general_called.should be_false
         end
       end
     end
