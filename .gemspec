@@ -29,7 +29,7 @@ Gem::Specification.new do |gem|
   gem.requirements               = []
   gem.add_runtime_dependency     'rack',      '>= 1.0'
   gem.add_development_dependency 'yard' ,     '>= 0.6.0'
-  gem.add_development_dependency 'rspec',     '>= 1.3.0'
+  gem.add_development_dependency 'rspec',     '>= 2.1.0'
   gem.add_development_dependency 'rack-test', '>= 0.5.6'
   gem.add_development_dependency 'nokogiri',  '>= 1.4.4'
   gem.post_install_message       = nil
