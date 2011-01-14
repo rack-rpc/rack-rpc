@@ -15,9 +15,9 @@ module Rack; module RPC
         # Wrap each method so we can inject before and after callbacks
         mappings.each do |rpc_method_name, server_method|
           self.send(:alias_method, :"#{server_method}_without_callbacks", server_method.to_sym)
-          self.send(:define_method, server_method) do
+          self.send(:define_method, server_method) do |*args|
             self.class.hooks[:before].each{|command| command.call(self) if command.callable?(server_method)}
-            out = self.send(:"#{server_method}_without_callbacks")
+            out = self.send(:"#{server_method}_without_callbacks", *args)
             self.class.hooks[:after].each{|command| command.call(self) if command.callable?(server_method)}
             out
           end
