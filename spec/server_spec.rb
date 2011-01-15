@@ -23,6 +23,28 @@ describe Rack::RPC::Server do
           @server.before_method_one_called.should be_true
           @server.test_method_one_called.should be_true
         end
+
+        it "should forward all passed arguments to rpc method" do
+          class TestRPCServerWithArgs < FakeRPCServerWithFilters
+            before_filter :test_filter
+            attr_accessor :attr1, :attr2
+
+            def test_arg_method(attr1, attr2)
+              @attr1 = attr1
+              @attr2 = attr2
+            end
+            rpc 'test_arg_method' => :test_arg_method
+
+            def test_filter
+              # Do something
+            end
+          end
+          @server = TestRPCServerWithArgs.new
+          @server.test_arg_method('one', 'two')
+          @server.attr1.should == 'one'
+          @server.attr2.should == 'two'
+        end
+
       end
 
       describe "with only options specified" do
