@@ -22,6 +22,7 @@ class Rack::RPC::Endpoint
       # @param  [Rack::Request] request
       # @return [Rack::Response]
       def execute(request)
+        @server.request = request # Store the request so it can be accessed from the server methods
         request_body = request.body.read
         request_body.force_encoding(Encoding::UTF_8) if request_body.respond_to?(:force_encoding) # Ruby 1.9+
         Rack::Response.new([process(request_body)], 200, {

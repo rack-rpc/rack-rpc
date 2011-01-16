@@ -6,6 +6,12 @@ describe Rack::RPC::Server do
     FakeRPCServer.rpc['fakerpcserver.some_unknown_method'].should == nil
   end
 
+  it "has access to the request object in the rpc methods" do
+    post "/rpc?test=test", {},  Factory.valid_json_request(:method => 'fakerpcserver.test_env')
+    response = JSON.parse(last_response.body)
+    response['result'].should == 'test'
+  end
+
   describe "before filters" do
     describe "with a given method name" do
       describe "and no options" do
