@@ -40,7 +40,7 @@ module Rack; module RPC
     # @return [Hash]
     attr_reader :options
 
-    # @return Rack::Request
+    # @return [Rack::Request]
     attr_accessor :request
 
     ##
