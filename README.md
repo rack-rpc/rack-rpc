@@ -105,6 +105,7 @@ Dependencies
 ------------
 
 * [Rack](http://rubygems.org/gems/rack) (>= 1.0.0)
+* [Builder](http://rubygems.org/gems/builder) (>= 2.1.2)
 
 Installation
 ------------
