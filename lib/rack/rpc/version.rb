@@ -2,7 +2,7 @@ module Rack; module RPC
   module VERSION
     MAJOR = 0
     MINOR = 0
-    TINY  = 5
+    TINY  = 6
     EXTRA = nil
 
     STRING = [MAJOR, MINOR, TINY, EXTRA].compact.join('.')
