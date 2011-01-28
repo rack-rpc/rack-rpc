@@ -1,5 +1,6 @@
 require 'xmlrpc/server' unless defined?(XMLRPC::BasicServer)
-require 'builder/xchar' # @see http://rubygems.org/gems/builder
+require 'builder'       # @see http://rubygems.org/gems/builder
+require 'builder/xchar'
 
 class Rack::RPC::Endpoint
   ##
