@@ -7,15 +7,15 @@ module Rack::RPC
     #
     # @example
     #   class Multiply < Operation
-    #     operand :x, Numeric, :nullable => false
-    #     operand :y, Numeric, :nullable => false
+    #     operand :x, Numeric
+    #     operand :y, Numeric
     #   end
     #
     # @param  [Symbol, #to_sym] name
     # @param  [Class] type
     # @param  [Hash{Symbol => Object}] options
     # @option options [Boolean] :optional (false)
-    # @option options [Boolean] :nullable (true)
+    # @option options [Boolean] :nullable (false)
     # @return [void]
     def self.operand(name, type = Object, options = {})
       raise TypeError, "expected a Class, but got #{type.inspect}" unless type.is_a?(Class)
