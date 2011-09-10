@@ -25,6 +25,26 @@ module Rack::RPC
     end
 
     ##
+    # Returns the arity range for this operation class.
+    #
+    # @return [Range]
+    def self.arity
+      @arity ||= begin
+        if const_defined?(:ARITY)
+          const_get(:ARITY)
+        else
+          min, max = 0, 0
+          @operands ||= {}
+          @operands.each do |name, options|
+            min += 1 unless options[:optional].eql?(true)
+            max += 1
+          end
+          Range.new(min, max)
+        end
+      end
+    end
+
+    ##
     # Executes this operation.
     #
     # @abstract
