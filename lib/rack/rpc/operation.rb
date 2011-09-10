@@ -1,6 +1,7 @@
 module Rack::RPC
   ##
   # Represents an RPC server operation.
+  #
   class Operation
     ##
     # Defines an operand for this operation class.

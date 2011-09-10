@@ -6,6 +6,7 @@ module Rack
     autoload :Middleware, 'rack/rpc/middleware'
     autoload :Operation,  'rack/rpc/operation'
     autoload :Server,     'rack/rpc/server'
+    autoload :Service,    'rack/rpc/service'
     autoload :VERSION,    'rack/rpc/version'
   end
 end
