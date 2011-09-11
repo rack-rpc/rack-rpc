@@ -1,4 +1,4 @@
-module Rack; module RPC
+module Rack::RPC
   ##
   # A Rack middleware base class.
   class Middleware
@@ -22,4 +22,4 @@ module Rack; module RPC
       @app.call(env)
     end
   end # Middleware
-end; end # Rack::RPC
+end # Rack::RPC

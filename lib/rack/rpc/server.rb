@@ -1,4 +1,4 @@
-module Rack; module RPC
+module Rack::RPC
   ##
   # A base class for RPC servers.
   class Server
@@ -102,4 +102,4 @@ module Rack; module RPC
       server.__send__(@method)
     end
   end # MethodCommand
-end; end # Rack::RPC
+end # Rack::RPC

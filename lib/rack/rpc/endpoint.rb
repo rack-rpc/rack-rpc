@@ -1,4 +1,4 @@
-module Rack; module RPC
+module Rack::RPC
   ##
   # A Rack middleware for RPC endpoints.
   class Endpoint < Middleware
@@ -44,4 +44,4 @@ module Rack; module RPC
       end
     end
   end # Endpoint
-end; end # Rack::RPC
+end # Rack::RPC
