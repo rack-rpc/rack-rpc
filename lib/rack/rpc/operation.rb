@@ -109,5 +109,27 @@ module Rack::RPC
     def execute
       raise NotImplementedError, "#{self.class}#execute"
     end
+
+    ##
+    # Returns the array representation of the arguments to this operation.
+    #
+    # @return [Array]
+    def to_a
+      self.class.operands.inject([]) do |result, (param_name, param_options)|
+        result << instance_variable_get("@#{param_name}")
+        result
+      end
+    end
+
+    ##
+    # Returns the hash representation of the arguments to this operation.
+    #
+    # @return [Hash]
+    def to_hash
+      self.class.operands.inject({}) do |result, (param_name, param_options)|
+        result[param_name] = instance_variable_get("@#{param_name}")
+        result
+      end
+    end
   end # Operation
 end # Rack::RPC
