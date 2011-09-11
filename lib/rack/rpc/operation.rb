@@ -20,8 +20,15 @@ module Rack::RPC
     # @return [void]
     def self.operand(name, type = Object, options = {})
       raise TypeError, "expected a Class, but got #{type.inspect}" unless type.is_a?(Class)
+      operands[name.to_sym] = options.merge(:type => type)
+    end
+
+    ##
+    # Returns the operand definitions for this operation class.
+    #
+    # @return [Hash{Symbol => Hash}]
+    def self.operands
       @operands ||= {}
-      @operands[name.to_sym] = options.merge(:type => type)
     end
 
     ##
@@ -34,8 +41,7 @@ module Rack::RPC
           const_get(:ARITY)
         else
           min, max = 0, 0
-          @operands ||= {}
-          @operands.each do |name, options|
+          operands.each do |name, options|
             min += 1 unless options[:optional].eql?(true)
             max += 1
           end
