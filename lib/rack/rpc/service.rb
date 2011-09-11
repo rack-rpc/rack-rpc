@@ -42,5 +42,26 @@ module Rack::RPC
         return klass if operator_name.eql?(klass_name.to_sym)
       end
     end
+
+    ##
+    # @param  [Symbol, #to_sym] method_name
+    # @return [Boolean] `true` or `false`
+    def respond_to?(method_name)
+      !!(self.class[method_name])
+    end
+
+    ##
+    # @param  [Symbol, #to_sym] method_name
+    # @param  [Array] args
+    # @return [void]
+    # @raise  [NoMethodError] if `self` doesn't respond to `method_name`
+    def method_missing(method_name, *args, &block)
+      if (operator = self.class[method_name]).nil?
+        super # raises NoMethodError
+      else
+        operator.new(args).execute
+      end
+    end
+    protected :method_missing
   end # Service
 end # Rack::RPC
