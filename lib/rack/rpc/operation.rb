@@ -51,6 +51,57 @@ module Rack::RPC
     end
 
     ##
+    # Initializes a new operation with the given arguments.
+    #
+    # @param  [Hash{Symbol => Object}] args
+    def initialize(args = [])
+      unless self.class.arity.include?(argc = args.count)
+        raise ArgumentError, (argc < self.class.arity.min) ?
+          "too few arguments (#{argc} for #{self.class.arity.min})" :
+          "too many arguments (#{argc} for #{self.class.arity.max})"
+      end
+
+      case args
+        when Array then initialize_from_array(args)
+        when Hash  then initialize_from_hash(args)
+        else raise ArgumentError, "expected an Array or Hash, but got #{args.inspect}"
+      end
+
+      initialize! if respond_to?(:initialize!)
+    end
+
+    ##
+    # @private
+    def initialize_from_array(args)
+      pos = 0
+      self.class.operands.each do |param_name, param_options|
+        arg = args[pos]; pos += 1
+
+        # TODO: check type/optionality/nullability constraints.
+
+        instance_variable_set("@#{param_name}", arg)
+      end
+    end
+    protected :initialize_from_array
+
+    ##
+    # @private
+    def initialize_from_hash(args)
+      params = self.class.operands
+      args.each do |param_name, arg|
+        param_options = params[param_name.to_sym]
+
+        unless param_options
+          raise ArgumentError, "unknown parameter name #{param_name.inspect}"
+        end
+        # TODO: check type/optionality/nullability constraints.
+
+        instance_variable_set("@#{param_name}", arg)
+      end
+    end
+    protected :initialize_from_hash
+
+    ##
     # Executes this operation.
     #
     # @abstract
