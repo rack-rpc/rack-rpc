@@ -47,7 +47,7 @@ module Rack::RPC
     # @param  [Symbol, #to_sym] method_name
     # @return [Boolean] `true` or `false`
     def respond_to?(method_name)
-      !!(self.class[method_name])
+      super || (self.class[method_name] ? true : false)
     end
 
     ##
