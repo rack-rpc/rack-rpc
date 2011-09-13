@@ -76,9 +76,7 @@ module Rack::RPC
       pos = 0
       self.class.operands.each do |param_name, param_options|
         arg = args[pos]; pos += 1
-
-        # TODO: check type/optionality/nullability constraints.
-
+        validate_argument!(arg, param_name, param_options)
         instance_variable_set("@#{param_name}", arg)
       end
     end
@@ -90,16 +88,27 @@ module Rack::RPC
       params = self.class.operands
       args.each do |param_name, arg|
         param_options = params[param_name.to_sym]
-
-        unless param_options
-          raise ArgumentError, "unknown parameter name #{param_name.inspect}"
-        end
-        # TODO: check type/optionality/nullability constraints.
-
+        raise ArgumentError, "unknown parameter name #{param_name.inspect}" unless param_options
+        validate_argument!(arg, param_name, param_options)
         instance_variable_set("@#{param_name}", arg)
       end
     end
     protected :initialize_from_hash
+
+    ##
+    # @private
+    def validate_argument!(arg, param_name, param_options)
+      if (param_type = param_options[:type]) && !(param_type === arg)
+        case param_type
+          when Regexp
+            raise TypeError, "expected a String matching #{param_type.inspect}, but got #{arg.inspect}"
+          else
+            raise TypeError, "expected a #{param_type}, but got #{arg.inspect}"
+        end
+      end
+      # TODO: check optionality/nullability constraints.
+    end
+    protected :validate_argument!
 
     ##
     # Executes this operation.
