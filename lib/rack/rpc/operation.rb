@@ -140,5 +140,13 @@ module Rack::RPC
         result
       end
     end
+
+    ##
+    # Returns the JSON representation of the arguments to this operation.
+    #
+    # @return [String] a serialized JSON object
+    def to_json
+      to_hash.to_json
+    end
   end # Operation
 end # Rack::RPC
