@@ -22,9 +22,12 @@ class Rack::RPC::Endpoint
       # @param  [Rack::Request] request
       # @return [Rack::Response]
       def execute(request)
-        @server.request = request # Store the request so it can be accessed from the server methods
+        # Store the request so that it can be accessed from the server methods:
+        @server.request = request if @server.respond_to?(:request=)
+
         request_body = request.body.read
         request_body.force_encoding(Encoding::UTF_8) if request_body.respond_to?(:force_encoding) # Ruby 1.9+
+
         Rack::Response.new([process(request_body)], 200, {
           'Content-Type' => (request.content_type || CONTENT_TYPE).to_s,
         })
@@ -61,19 +64,31 @@ class Rack::RPC::Endpoint
         begin
           request = JSONRPC::Request.new(struct)
           response.id = request.id
-          raise ::TypeError, "invalid request" unless request.valid?
-          method = @server.class.rpc[request.method]
-          raise ::NoMethodError, "undefined method `#{request.method}'" unless method && @server.respond_to?(method)
-          response.result = @server.__send__(method, *request.params)
+
+          raise ::TypeError, "invalid JSON-RPC request" unless request.valid?
+
+          case operator = @server.class[request.method]
+            when nil
+              raise ::NoMethodError, "undefined operation `#{request.method}'"
+            when Class # a Rack::RPC::Operation subclass
+              response.result = operator.new(request.params).execute
+            else
+              response.result = @server.__send__(operator, *request.params)
+          end
+
         rescue ::TypeError => exception # FIXME
           response.error = JSONRPC::ClientError.new(:message => exception.to_s)
+
         rescue ::NoMethodError => exception
           response.error = JSONRPC::NoMethodError.new(:message => exception.to_s)
+
         rescue ::ArgumentError => exception
           response.error = JSONRPC::ArgumentError.new(:message => exception.to_s)
+
         rescue => exception
           response.error = JSONRPC::InternalError.new(:message => exception.to_s)
         end
+
         response.to_hash.delete_if { |k, v| v.nil? }
       end
     end # Server

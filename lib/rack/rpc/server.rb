@@ -4,6 +4,13 @@ module Rack::RPC
   class Server
     ##
     # @private
+    def self.[](rpc_method_name)
+      @mappings ||= {}
+      @mappings[rpc_method_name]
+    end
+
+    ##
+    # @private
     def self.rpc(mappings = {})
       @mappings ||= {}
       if mappings.empty?
