@@ -24,6 +24,44 @@ module Rack::RPC
     end
 
     ##
+    # Defines the `#prepare` instance method.
+    #
+    # @yield
+    # @return [void]
+    def self.prepare(&block)
+      self.send(:define_method, :prepare) do
+        begin
+          before_prepare if respond_to?(:before_prepare)
+          result = instance_eval(&block)
+          after_prepare if respond_to?(:after_prepare)
+          result
+        rescue Exception => error
+          after_error(error) if respond_to?(:after_error)
+          raise
+        end
+      end
+    end
+
+    ##
+    # Defines the `#execute` instance method.
+    #
+    # @yield
+    # @return [void]
+    def self.execute(&block)
+      self.send(:define_method, :execute) do
+        begin
+          before_execute if respond_to?(:before_execute)
+          result = instance_eval(&block)
+          after_execute if respond_to?(:after_execute)
+          result
+        rescue Exception => error
+          after_error(error) if respond_to?(:after_error)
+          raise
+        end
+      end
+    end
+
+    ##
     # Returns the operand definitions for this operation class.
     #
     # @return [Hash{Symbol => Hash}]
