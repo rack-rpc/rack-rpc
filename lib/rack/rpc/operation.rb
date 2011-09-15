@@ -31,9 +31,13 @@ module Rack::RPC
     def self.prepare(&block)
       self.send(:define_method, :prepare) do
         begin
-          before_prepare if respond_to?(:before_prepare)
-          result = instance_eval(&block)
-          after_prepare if respond_to?(:after_prepare)
+          result = nil
+          begin
+            before_prepare if respond_to?(:before_prepare)
+            result = instance_eval(&block)
+          ensure
+            after_prepare if respond_to?(:after_prepare)
+          end
           result
         rescue Exception => error
           after_error(error) if respond_to?(:after_error)
