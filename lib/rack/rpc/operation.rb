@@ -97,12 +97,6 @@ module Rack::RPC
     #
     # @param  [Hash{Symbol => Object}] args
     def initialize(args = [])
-      unless self.class.arity.include?(argc = args.count)
-        raise ArgumentError, (argc < self.class.arity.min) ?
-          "too few arguments (#{argc} for #{self.class.arity.min})" :
-          "too many arguments (#{argc} for #{self.class.arity.max})"
-      end
-
       case args
         when Array then initialize_from_array(args)
         when Hash  then initialize_from_hash(args)
@@ -115,6 +109,8 @@ module Rack::RPC
     ##
     # @private
     def initialize_from_array(args)
+      validate_arity!(args)
+
       pos = 0
       self.class.operands.each do |param_name, param_options|
         arg = args[pos]; pos += 1
@@ -129,6 +125,8 @@ module Rack::RPC
     ##
     # @private
     def initialize_from_hash(args)
+      validate_arity!(args)
+
       params = self.class.operands
       args.each do |param_name, arg|
         param_options = params[param_name.to_sym]
@@ -140,6 +138,17 @@ module Rack::RPC
       end
     end
     protected :initialize_from_hash
+
+    ##
+    # @private
+    def validate_arity!(args)
+      unless self.class.arity.include?(argc = args.count)
+        raise ArgumentError, (argc < self.class.arity.min) ?
+          "too few arguments (#{argc} for #{self.class.arity.min})" :
+          "too many arguments (#{argc} for #{self.class.arity.max})"
+      end
+    end
+    protected :validate_arity!
 
     ##
     # @private
