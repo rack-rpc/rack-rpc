@@ -75,7 +75,7 @@ class Rack::RPC::Endpoint
             when nil
               raise ::NoMethodError, "undefined operation `#{request.method}'"
             when Class # a Rack::RPC::Operation subclass
-              response.result = operator.new(request.params).execute
+              response.result = operator.new(request).execute
             else
               response.result = @server.__send__(operator, *request.params)
           end
@@ -175,6 +175,13 @@ class Rack::RPC::Endpoint
         super.merge({
           :id => id,
         })
+      end
+
+      ##
+      # @return [Array]
+      def to_args
+        # used from Operation#initialize
+        params
       end
     end # Request
 

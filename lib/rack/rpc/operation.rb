@@ -93,6 +93,11 @@ module Rack::RPC
     end
 
     ##
+    # @return [Object]
+    attr_reader :context
+    def context() @__context__ end
+
+    ##
     # Initializes a new operation with the given arguments.
     #
     # @param  [Hash{Symbol => Object}] args
@@ -100,7 +105,12 @@ module Rack::RPC
       case args
         when Array then initialize_from_array(args)
         when Hash  then initialize_from_hash(args)
-        else raise ArgumentError, "expected an Array or Hash, but got #{args.inspect}"
+        else case
+          when args.respond_to?(:to_args)
+            initialize_from_array(args.to_args)
+            @__context__ = args.context if args.respond_to?(:context)
+          else raise ArgumentError, "expected an Array or Hash, but got #{args.inspect}"
+        end
       end
 
       initialize! if respond_to?(:initialize!)
