@@ -28,19 +28,21 @@ class Rack::RPC::Endpoint
         request_body = request.body.read
         request_body.force_encoding(Encoding::UTF_8) if request_body.respond_to?(:force_encoding) # Ruby 1.9+
 
-        Rack::Response.new([process(request_body)], 200, {
+        Rack::Response.new([process(request_body, request)], 200, {
           'Content-Type' => (request.content_type || CONTENT_TYPE).to_s,
         })
       end
 
       ##
       # @param  [String] input
+      # @param  [Object] context
       # @return [String]
-      def process(input)
+      def process(input, context = nil)
+        response = nil
         begin
-          response = case json = JSON.parse(input)
-            when Array then process_batch(json)
-            when Hash  then process_request(json)
+          response = case (json = JSON.parse(input))
+            when Array then process_batch(json, context)
+            when Hash  then process_request(json, context)
           end
         rescue JSON::ParserError => exception
           response = JSONRPC::Response.new
@@ -51,18 +53,20 @@ class Rack::RPC::Endpoint
 
       ##
       # @param  [Array<Hash>] batch
+      # @param  [Object] context
       # @return [Array]
-      def process_batch(batch)
-        batch.map { |struct| process_request(struct) }
+      def process_batch(batch, context = nil)
+        batch.map { |struct| process_request(struct, context) }
       end
 
       ##
       # @param  [Hash] struct
+      # @param  [Object] context
       # @return [Hash]
-      def process_request(struct)
+      def process_request(struct, context = nil)
         response = JSONRPC::Response.new
         begin
-          request = JSONRPC::Request.new(struct)
+          request = JSONRPC::Request.new(struct, context)
           response.id = request.id
 
           raise ::TypeError, "invalid JSON-RPC request" unless request.valid?
@@ -106,12 +110,21 @@ class Rack::RPC::Endpoint
       end
 
       ##
+      # An arbitrary context associated with the object.
+      #
+      # @return [Object]
+      attr_reader :context
+
+      ##
       # @param  [Hash] options
-      def initialize(options = {})
+      # @param  [Object] context
+      #   an optional context to associate with the object
+      def initialize(options = {}, context = nil)
         options = self.class.const_get(:OPTIONS).merge(options)
         options.each do |k, v|
           instance_variable_set("@#{k}", v)
         end
+        @context = context if context
       end
 
       ##
