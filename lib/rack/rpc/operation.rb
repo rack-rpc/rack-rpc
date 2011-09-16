@@ -31,14 +31,13 @@ module Rack::RPC
     def self.prepare(&block)
       self.send(:define_method, :prepare) do
         begin
-          result = nil
           begin
             before_prepare if respond_to?(:before_prepare)
-            result = instance_eval(&block)
+            instance_eval(&block)
           ensure
             after_prepare if respond_to?(:after_prepare)
           end
-          result
+          self
         rescue Exception => error
           after_error(error) if respond_to?(:after_error)
           raise
@@ -175,6 +174,15 @@ module Rack::RPC
       end
     end
     protected :validate_argument!
+
+    ##
+    # Prepares this operation.
+    #
+    # @abstract
+    # @return [void] `self`
+    def prepare
+      self
+    end
 
     ##
     # Executes this operation.
