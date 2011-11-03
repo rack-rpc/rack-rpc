@@ -77,7 +77,30 @@ class Rack::RPC::Endpoint
             when Class # a Rack::RPC::Operation subclass
               response.result = operator.new(request).execute
             else
-              response.result = @server.__send__(operator, *request.params)
+              # If we receive named attributes in Hash
+              if request.params.class == Hash
+                # Get original method without callbacks
+                method = @server.method(operator.to_s + "_without_callbacks")
+                # Get method parameters 
+                method_parameters = method.parameters.map {|v| v[1].to_s }
+                # Check whether all required arguments are provided
+                required_parameters = method.parameters.select{|v| v[0].to_s == "req"}.map{|a| a[1].to_s}
+                missing_parameters = required_parameters - request.params.keys
+                raise ::ArgumentError, "Required argument(s) missing: #{missing_parameters.join(',')}" unless missing_parameters.size.zero?
+                # Check whether unknown parameters provided
+                unknown_parameters = request.params.keys - method_parameters
+                raise ::ArgumentError, "Unknown argument(s) provided: #{unknown_parameters.join(',')}" unless unknown_parameters.size.zero?
+                ##
+                # Get parameter values from request in order our method is expecting. Skip if key is not defined.
+                # After required parameters check, only optional parameters can be missing and it's only your fault
+                # if you added optional parameter between required parameter and request didn't provide its value.
+                params = []
+                method_parameters.each {|v| params << request.params[v] if request.params.has_key?(v)}
+                # Execute method with parameters in correct order. Profit :)
+                response.result = @server.__send__(operator, *params)
+              else
+                response.result = @server.__send__(operator, *request.params)
+              end
           end
 
         rescue ::TypeError => exception # FIXME
