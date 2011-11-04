@@ -77,7 +77,33 @@ class Rack::RPC::Endpoint
             when Class # a Rack::RPC::Operation subclass
               response.result = operator.new(request).execute
             else
-              response.result = @server.__send__(operator, *request.params)
+              # If we receive named attributes in Hash
+              if request.params.class == Hash
+                # Get original method without callbacks
+                method = @server.method(operator.to_s + "_without_callbacks")
+                # Get method parameters 
+                method_parameters = method.parameters.map {|v| v[1].to_s }
+                # Check whether all required arguments are provided
+                required_parameters = method.parameters.select{|v| v[0].to_s == "req"}.map{|a| a[1].to_s}
+                missing_parameters = required_parameters - request.params.keys
+                raise ::ArgumentError, "Required argument(s) missing: #{missing_parameters.join(',')}" unless missing_parameters.size.zero?
+                # Check whether unknown parameters provided
+                unknown_parameters = request.params.keys - method_parameters
+                raise ::ArgumentError, "Unknown argument(s) provided: #{unknown_parameters.join(',')}" unless unknown_parameters.size.zero?
+                ##
+                # Get parameter values from request in order our method is expecting. Set nil if key is not defined.
+                # After required parameters check, only optional parameters can be missing.
+                # So you should add this to every method with optional parameters, otherwise
+                # every optional paremeter you skipped in request will be nil:
+                # optional_parameter ||= value
+                # I can only provide array of parameters with proper order, but can't do anything
+                # when parameter was skipped, except setting it to nil. Sorry - Ruby limitations.  
+                params = method_parameters.map {|v| request.params[v]}
+                # Execute method with parameters in correct order. Profit :)
+                response.result = @server.__send__(operator, *params)
+              else
+                response.result = @server.__send__(operator, *request.params)
+              end
           end
 
         rescue ::TypeError => exception # FIXME
