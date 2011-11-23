@@ -50,6 +50,9 @@ module Rack::RPC
     # @return [Rack::Request]
     attr_accessor :request
 
+    # @return all parameters
+    attr_accessor :params
+
     ##
     # @param  [Hash] options
     def initialize(options = {}, &block)

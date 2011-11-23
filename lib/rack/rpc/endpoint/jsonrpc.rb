@@ -67,6 +67,7 @@ class Rack::RPC::Endpoint
         response = JSONRPC::Response.new
         begin
           request = JSONRPC::Request.new(struct, context)
+          @server.params = request.params
           response.id = request.id
 
           raise ::TypeError, "invalid JSON-RPC request" unless request.valid?
@@ -81,15 +82,12 @@ class Rack::RPC::Endpoint
               if request.params.class == Hash
                 # Get original method without callbacks
                 method = @server.method(operator.to_s + "_without_callbacks")
-                # Get method parameters 
+                # Get method parameters
                 method_parameters = method.parameters.map {|v| v[1].to_s }
                 # Check whether all required arguments are provided
-                required_parameters = method.parameters.select{|v| v[0].to_s == "req"}.map{|a| a[1].to_s}
+                required_parameters = method.parameters.select{|v| v[0] == :req }.map{|a| a[1].to_s}
                 missing_parameters = required_parameters - request.params.keys
                 raise ::ArgumentError, "Required argument(s) missing: #{missing_parameters.join(',')}" unless missing_parameters.size.zero?
-                # Check whether unknown parameters provided
-                unknown_parameters = request.params.keys - method_parameters
-                raise ::ArgumentError, "Unknown argument(s) provided: #{unknown_parameters.join(',')}" unless unknown_parameters.size.zero?
                 ##
                 # Get parameter values from request in order our method is expecting. Set nil if key is not defined.
                 # After required parameters check, only optional parameters can be missing.
@@ -97,7 +95,7 @@ class Rack::RPC::Endpoint
                 # every optional paremeter you skipped in request will be nil:
                 # optional_parameter ||= value
                 # I can only provide array of parameters with proper order, but can't do anything
-                # when parameter was skipped, except setting it to nil. Sorry - Ruby limitations.  
+                # when parameter was skipped, except setting it to nil. Sorry - Ruby limitations.
                 params = method_parameters.map {|v| request.params[v]}
                 # Execute method with parameters in correct order. Profit :)
                 response.result = @server.__send__(operator, *params)
@@ -119,7 +117,7 @@ class Rack::RPC::Endpoint
           response.error = JSONRPC::InternalError.new(:message => exception.to_s)
         end
 
-        response.to_hash.delete_if { |k, v| v.nil? }
+        response.to_hash
       end
     end # Server
 
