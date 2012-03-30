@@ -89,6 +89,11 @@ class Rack::RPC::Endpoint
         rescue ::ArgumentError => exception
           response.error = JSONRPC::ArgumentError.new(:message => exception.to_s)
 
+        rescue ::Rack::RPC::Error => exception
+          response.error = JSONRPC::Error.new(:message => exception.to_s,
+                                              :code => exception.code,
+                                              :data => exception.data)
+
         rescue => exception
           response.error = JSONRPC::InternalError.new(:message => exception.to_s)
         end
