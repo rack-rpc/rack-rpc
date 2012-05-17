@@ -9,11 +9,7 @@ class FakeRPCServer < Rack::RPC::Server
   rpc 'fakerpcserver.test' => :test
 
   def test_env
-    STDERR.puts "Request: #{request.inspect}"
-    STDERR.puts "Params: #{request.params.inspect}"
-    result = request.params['test']
-    STDERR.puts "Result: = #{result}"
-    result
+    request.params['test']
   end
   rpc 'fakerpcserver.test_env' => :test_env
 end
