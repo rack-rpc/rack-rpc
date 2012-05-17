@@ -24,7 +24,7 @@ Gem::Specification.new do |gem|
   gem.test_files         = %w()
   gem.has_rdoc           = false
 
-  gem.required_ruby_version      = '>= 1.9.2'
+  gem.required_ruby_version      = '>= 1.8.7'
   gem.requirements               = []
   gem.add_runtime_dependency     'builder',   '>= 2.1.2'
   gem.add_runtime_dependency     'rack',      '>= 1.0'
