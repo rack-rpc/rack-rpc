@@ -2,6 +2,7 @@ require 'xmlrpc/server' unless defined?(XMLRPC::BasicServer)
 require 'builder'       # @see http://rubygems.org/gems/builder
 
 # Monkey patch the xml writer for problems with double arrays
+# Problem is filed as: http://jira.codehaus.org/browse/JRUBY-6670
 class XMLRPC::XMLWriter::Simple
   alias_method :unsave_element, :element
   def element(name, attrs, *children)
