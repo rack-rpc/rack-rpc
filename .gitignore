@@ -2,5 +2,6 @@
 .tmp
 .yardoc
 .rvmrc
+.rbx
 pkg
 tmp
