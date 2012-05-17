@@ -5,15 +5,14 @@ Gem::Specification.new do |gem|
   gem.version            = File.read('VERSION').chomp
   gem.date               = File.mtime('VERSION').strftime('%Y-%m-%d')
 
-  gem.name               = 'rack-rpc'
-  gem.homepage           = 'http://github.com/datagraph'
+  gem.name               = 'threez-rack-rpc'
+  gem.homepage           = 'https://github.com/threez/rack-rpc'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
   gem.summary            = 'JSON-RPC/XML-RPC server for Rack applications.'
   gem.description        = 'Rack middleware for serving up RPC endpoints.'
-  gem.rubyforge_project  = 'datagraph'
 
-  gem.author             = 'Datagraph'
-  gem.email              = 'datagraph@googlegroups.com'
+  gem.authors            = ['Datagraph', 'Vincent Landgraf']
+  gem.email              = 'vincent.landgraf@1und1.de'
 
   gem.platform           = Gem::Platform::RUBY
   gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION) + Dir.glob('lib/**/*.rb')
