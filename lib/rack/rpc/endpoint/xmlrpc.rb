@@ -1,6 +1,14 @@
 require 'xmlrpc/server' unless defined?(XMLRPC::BasicServer)
 require 'builder'       # @see http://rubygems.org/gems/builder
 
+# Monkey patch the xml writer for problems with double arrays
+class XMLRPC::XMLWriter::Simple
+  alias_method :unsave_element, :element
+  def element(name, attrs, *children)
+    unsave_element(name, attrs, *children.flatten)
+  end
+end
+
 class Rack::RPC::Endpoint
   ##
   # @see http://en.wikipedia.org/wiki/XML-RPC
