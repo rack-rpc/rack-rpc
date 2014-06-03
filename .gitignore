@@ -5,3 +5,4 @@
 .rbx
 pkg
 tmp
+Gemfile.lock
