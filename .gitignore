@@ -1,8 +1,14 @@
 .DS_Store
 .tmp
-.yardoc
-.rvmrc
+/.yardoc
+/.rvmrc
 .rbx
 pkg
 tmp
 Gemfile.lock
+*~
+/.buildpath
+/.project
+/.gh-pages
+/.ruby-*
+/doc/yard

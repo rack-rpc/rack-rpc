@@ -1,12 +1,18 @@
---title "Rack::RPC - JSON-RPC/XML-RPC Server for Rack Applications"
---output-dir doc/yard
---protected
---no-private
+--charset UTF-8
+--default-return void
+--embed-mixins
+--hide-api private
 --hide-void-return
+--locale en_US.UTF-8
 --markup markdown
+--no-private
+--output-dir doc/yard
+#--private
+--protected
 --readme README.md
+--template-path yard-template
+--title 'Rack::RPC - JSON-RPC/XML-RPC Server for Rack Applications'
+lib/**/*.rb
 -
-AUTHORS
-CREDITS
-UNLICENSE
-VERSION
+AUTHORS.md
+UNLICENSE.md
