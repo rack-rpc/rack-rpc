@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Module: Rack::RPC::Endpoint::JSONRPC
+  
+    &mdash; Rack::RPC - JSON-RPC/XML-RPC Server for Rack Applications
+  
+</title>
+
+  <link rel="stylesheet" href="../../../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/common.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../../../css/highlight.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../../../';
+  framesUrl = "../../../frames.html#!Rack/RPC/Endpoint/JSONRPC.html";
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/app.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../../../js/highlight.pack.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    hljs.configure({languages:[]});
+    //$(document).ready(function() {
+    //  $('code').each(function(i, e) {hljs.highlightBlock(e)});
+    //});
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../../../_index.html">Index (J)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../../../Rack.html" title="Rack (module)">Rack</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../../RPC.html" title="Rack::RPC (module)">RPC</a></span></span> &raquo; <span class='title'><span class='object_link'><a href="../Endpoint.html" title="Rack::RPC::Endpoint (class)">Endpoint</a></span></span>
+     &raquo; 
+    <span class="title">JSONRPC</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../../../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../../../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../../../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Module: Rack::RPC::Endpoint::JSONRPC
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">lib/rack/rpc/endpoint/jsonrpc.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  
+
+  <p class="tag_title">See Also:</p>
+  <ul class="see">
+    
+      <li><a href="http://en.wikipedia.org/wiki/JSON-RPC" target="_parent" title="http://en.wikipedia.org/wiki/JSON-RPC">http://en.wikipedia.org/wiki/JSON-RPC</a></li>
+    
+      <li><a href="http://groups.google.com/group/json-rpc/web/json-rpc-2-0" target="_parent" title="http://groups.google.com/group/json-rpc/web/json-rpc-2-0">http://groups.google.com/group/json-rpc/web/json-rpc-2-0</a></li>
+    
+  </ul>
+
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="JSONRPC/ArgumentError.html" title="Rack::RPC::Endpoint::JSONRPC::ArgumentError (class)">ArgumentError</a></span>, <span class='object_link'><a href="JSONRPC/ClientError.html" title="Rack::RPC::Endpoint::JSONRPC::ClientError (class)">ClientError</a></span>, <span class='object_link'><a href="JSONRPC/Error.html" title="Rack::RPC::Endpoint::JSONRPC::Error (class)">Error</a></span>, <span class='object_link'><a href="JSONRPC/InternalError.html" title="Rack::RPC::Endpoint::JSONRPC::InternalError (class)">InternalError</a></span>, <span class='object_link'><a href="JSONRPC/NoMethodError.html" title="Rack::RPC::Endpoint::JSONRPC::NoMethodError (class)">NoMethodError</a></span>, <span class='object_link'><a href="JSONRPC/Notification.html" title="Rack::RPC::Endpoint::JSONRPC::Notification (class)">Notification</a></span>, <span class='object_link'><a href="JSONRPC/Object.html" title="Rack::RPC::Endpoint::JSONRPC::Object (class)">Object</a></span>, <span class='object_link'><a href="JSONRPC/ParseError.html" title="Rack::RPC::Endpoint::JSONRPC::ParseError (class)">ParseError</a></span>, <span class='object_link'><a href="JSONRPC/Request.html" title="Rack::RPC::Endpoint::JSONRPC::Request (class)">Request</a></span>, <span class='object_link'><a href="JSONRPC/Response.html" title="Rack::RPC::Endpoint::JSONRPC::Response (class)">Response</a></span>, <span class='object_link'><a href="JSONRPC/Server.html" title="Rack::RPC::Endpoint::JSONRPC::Server (class)">Server</a></span>, <span class='object_link'><a href="JSONRPC/ServerError.html" title="Rack::RPC::Endpoint::JSONRPC::ServerError (class)">ServerError</a></span>
+    
+  
+</p>
+
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="CONTENT_TYPE-constant" class="">CONTENT_TYPE =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json; charset=UTF-8</span><span class='tstring_end'>&#39;</span></span></pre></dd>
+      
+        <dt id="VERSION-constant" class="">VERSION =
+          
+        </dt>
+        <dd><pre class="code"><span class='float'>2.0</span></pre></dd>
+      
+    </dl>
+  
+
+
+
+
+
+
+
+
+
+</div>
+
+    <div id="footer">
+  Generated on Thu Jun  5 11:16:43 2014 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.4 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>
