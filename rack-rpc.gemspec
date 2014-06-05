@@ -28,7 +28,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'nokogiri',  '>= 1.4.4'
   gem.add_development_dependency 'yard',      '>= 0.6.0'
   gem.add_development_dependency 'redcarpet', '>= 3.1.0'
-  gem.add_development_dependency 'rspec',     '>= 2.1.0'
+  gem.add_development_dependency 'rspec',     '~> 2.1'
   gem.add_development_dependency 'rack-test', '>= 0.5.6'
   gem.add_development_dependency 'travis-lint'
   gem.post_install_message       = nil

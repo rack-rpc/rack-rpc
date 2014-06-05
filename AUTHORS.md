@@ -1,3 +1,3 @@
 * Arto Bendiken <arto.bendiken@gmail.com>
 * Josh Huckabee <joshhuckabee@gmail.com>
-* Vincent Landgraf <vincent.landgraf@1und1.de>
+* Vincent Landgraf
