@@ -21,15 +21,16 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 1.8.7'
   gem.requirements               = []
-  gem.add_runtime_dependency     'builder',   '>= 2.1.2'
-  gem.add_runtime_dependency     'rack',      '>= 1.0'
+  gem.add_runtime_dependency     'builder',   '~> 2.1.2'
+  gem.add_runtime_dependency     'rack',      '~> 1.0'
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'json',      '~> 1.7.3'
-  gem.add_development_dependency 'nokogiri',  '>= 1.4.4'
-  gem.add_development_dependency 'yard',      '>= 0.6.0'
-  gem.add_development_dependency 'redcarpet', '>= 3.1.0'
+  gem.add_development_dependency 'json',      '~> 1.7'
+  gem.add_development_dependency 'nokogiri',  '~> 1.4.4'
   gem.add_development_dependency 'rspec',     '~> 2.1'
-  gem.add_development_dependency 'rack-test', '>= 0.5.6'
-  gem.add_development_dependency 'travis-lint'
+  gem.add_development_dependency 'rack-test', '~> 0.5.6'
+  if defined?( RUBY_ENGINE ) and 'ruby' === RUBY_ENGINE
+    gem.add_development_dependency 'yard'
+    gem.add_development_dependency 'redcarpet'
+  end
   gem.post_install_message       = nil
 end
