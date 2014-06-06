@@ -8,5 +8,6 @@ module Rack
     autoload :Server,     'rack/rpc/server'
     autoload :Service,    'rack/rpc/service'
     autoload :VERSION,    'rack/rpc/version'
+    autoload :Error,      'rack/rpc/error'
   end
 end

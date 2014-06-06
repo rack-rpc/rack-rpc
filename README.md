@@ -1,4 +1,4 @@
-JSON-RPC/XML-RPC Server for Rack Applications
+JSON-RPC/XML-RPC Server for Rack Applications [![Build Status](https://secure.travis-ci.org/threez/rack-rpc.png?branch=master)](http://travis-ci.org/threez/rack-rpc)
 =============================================
 
 This is a [Rack][] middleware that facilitates the creation of

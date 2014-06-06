@@ -7,7 +7,7 @@ describe Rack::RPC::Server do
   end
 
   it "has access to the request object in the rpc methods" do
-    post "/rpc?test=test", {},  Factory.valid_json_request(:method => 'fakerpcserver.test_env')
+    post "/rpc?test=test", {}, Factory.valid_json_request(:method => 'fakerpcserver.test_env')
     response = JSON.parse(last_response.body)
     response['result'].should == 'test'
   end

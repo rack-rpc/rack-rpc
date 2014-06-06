@@ -24,7 +24,8 @@ module Rack::RPC
           self.send(:alias_method, :"#{server_method}_without_callbacks", server_method.to_sym)
           self.send(:define_method, server_method) do |*args|
             self.class.hooks[:before].each{|command| command.call(self) if command.callable?(server_method)}
-            out = self.send(:"#{server_method}_without_callbacks", *args)
+            method = :"#{server_method}_without_callbacks"
+            out = args.any? ? self.send(method, *args) : self.send(method)
             self.class.hooks[:after].each{|command| command.call(self) if command.callable?(server_method)}
             out
           end

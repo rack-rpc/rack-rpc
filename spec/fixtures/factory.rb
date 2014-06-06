@@ -19,9 +19,12 @@ class Factory
   end
 
   def self.valid_xml_request_string(opts = {})
+    method = opts['method'] || opts[:method]
     xml_markup = Builder::XmlMarkup.new
     xml_markup.instruct! :xml, :version=>"1.0"
-    xml_markup.methodCall{ xml_markup.methodName(opts['method'] || 'fakerpcserver.test')}
+    xml_markup.methodCall {
+      xml_markup.methodName(method || 'fakerpcserver.test')
+    }
   end
 
   def self.valid_xml_request(opts = {})

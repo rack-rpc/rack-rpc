@@ -13,6 +13,32 @@ describe Rack::RPC::Endpoint::JSONRPC do
     response['error'].should_not be_nil
   end
 
+  it "returns a custom error response when using rpc error class" do
+    FakeRPCServer.any_instance.stub(:test) do
+      raise Rack::RPC::Error.new(123, "error")
+    end
+    post "/rpc", {},  Factory.valid_json_request
+    response = JSON.parse(last_response.body)
+    response['error'].should == {
+      "code" => 123,
+      "message" => "error",
+      "data" => nil
+    }
+  end
+
+  it "returns a custom error response with data when using rpc error class with data" do
+    FakeRPCServer.any_instance.stub(:test) do
+        raise Rack::RPC::Error.new(123, "error", { "request_id" => 6452 })
+    end
+    post "/rpc", {},  Factory.valid_json_request
+    response = JSON.parse(last_response.body)
+    response['error'].should == {
+      "code" => 123,
+      "message" => "error",
+      "data" => { "request_id" => 6452 }
+    }
+  end
+
   it "returns valid response when request is valid" do
     post "/rpc", {},  Factory.valid_json_request
     response = JSON.parse(last_response.body)
