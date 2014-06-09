@@ -1,4 +1,0 @@
-[submodule "0.0.11"]
-	path = 0.0.11
-	url = git@github.com:rack-rpc/rack-rpc.git
-	branch = gh-pages
